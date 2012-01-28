@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#d0d0d0"
+        >
+
+    <!-- Detail View -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+    >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="56dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
+                >
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:id="@+id/detail_image"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/gray_border"
+                   android:layout_marginBottom="4dp"
+                />
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#707070"
+                android:textSize="12sp"
+                />
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                />
+        
+    </LinearLayout>
+    </ScrollView>
+
+    <!-- Background Frame -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                >
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/top_bar"
+                   ></ImageView>
+    </LinearLayout>
+
+    <!-- Controls -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                >
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_panic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panic_button"
+                android:layout_weight="0"
+                android:layout_gravity="left"
+                />
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="48dp"
+              android:layout_weight="1"
+              />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/status_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/previous_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detail_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/next_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+    </LinearLayout>
+
+</FrameLayout>

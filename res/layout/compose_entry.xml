@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10px">
+
+    <EditText android:id="@+id/compose_entry"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:inputType="textMultiLine"
+              android:lines="5"
+              android:gravity="top|left"
+              android:background="@android:drawable/editbox_background"><requestFocus/></EditText>
+
+    <Button android:id="@+id/compose_attach"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/compose_entry"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10px"
+            android:text="Image"/>
+
+    <ImageView android:id="@+id/compose_image"
+               android:layout_width="120dp"
+               android:layout_height="90dp"
+               android:visibility="gone"
+               android:layout_below="@id/compose_entry"
+               android:layout_alignParentLeft="true"
+               android:layout_marginLeft="10px"
+               android:scaleType="centerInside"
+               />
+
+    <Button android:id="@+id/compose_ok"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/compose_entry"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10px"
+            android:text="Post"/>
+
+    <Button android:id="@+id/compose_cancel"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/compose_ok"
+            android:layout_alignTop="@id/compose_ok"
+            android:text="Cancel"/>
+</RelativeLayout>
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">SplinterNet</string>
+
+    <!-- Bluetooth Sync -->
+    <string name="not_connected">Not connected.</string>
+    <string name="title_not_connected">Not connected.</string>
+    <string name="title_connecting">Connecting...</string>
+    <string name="title_connected_to">Connected to %1$s.</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled, exiting.</string>
+    <string name="sync_syncing">Syncing...</string>
+    <string name="sync_sending">Sending</string>
+    <string name="sync_receiving">Receiving</string>
+    <string name="sync_cancel">Abort</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">Scanning for devices...</string>
+    <string name="select_device">Select a device.</string>
+    <string name="none_paired">No devices have been paired.</string>
+    <string name="none_found">No devices found.</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for Devices</string>
+
+    <!-- Bluetooth Options Menu -->
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="discoverable">Make discoverable</string>
+
+    <!-- Summary Options Menu -->
+    <string name="compose">Compose</string>
+    <string name="sync">Sync</string>
+    <string name="clear">Clear</string>
+
+    <!-- Post Status options -->
+    <string name="status_important">Important</string>
+    <string name="status_normal">Normal</string>
+    <string name="status_delete">Delete</string>
+    <string name="status_button_ok">OK</string>
+    <string name="status_dialog_title">This Post</string>
+
+    <!-- Panic -->
+    <string name="panic_confirm">Delete all posts?</string>
+    <string name="panic_yes">Yes, Delete</string>
+    <string name="panic_no">No</string>
+
+    <!-- Summary Text -->
+    <string name="summary_loading">Loading...</string>
+    <string name="summary_no_posts">No Posts.</string>
+
+    <!-- Compose -->
+    <string name="abort_compose">Abort editing this post, losing all changes?</string>
+    <string name="abort_yes">Abort</string>
+    <string name="remove_image">Remove this image?</string>
+    <string name="remove_image_yes">Yes</string>
+    <string name="remove_image_no">No</string>
+
+    <!-- Welcome Post -->
+    <string name="welcome">Welcome to SplinterNet! Press the pencil icon to author a post. Press the rotating arrows icon to sync your content with another SplinterNet user. Press the lightning bolt icon at the top left to instantly delete all content.</string>
+
+</resources>

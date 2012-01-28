@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#d0d0d0"
+        >
+
+    <!-- Compose View -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="56dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
+                >
+
+        <EditText android:id="@+id/compose_entry"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:inputType="textMultiLine|textCapSentences"
+                  android:lines="5"
+                  android:gravity="top|left"
+                  android:background="@android:drawable/editbox_background"><requestFocus/></EditText>
+    </LinearLayout>
+
+    <!-- Background Frame -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                >
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/top_bar"
+                   ></ImageView>
+    </LinearLayout>
+
+    <!-- Controls -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                >
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/compose_panic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panic_button"
+                android:layout_weight="0"
+                android:layout_gravity="left"
+                />
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="48dp"
+              android:layout_weight="1"
+              />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/compose_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/compose_photo_container"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:background="@drawable/blank_but"
+                android:visibility="gone"
+                >
+            <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:id="@+id/compose_photo"
+                   android:layout_width="48dp"
+                   android:layout_height="48dp"
+                   android:adjustViewBounds="false"
+                   android:padding="4dp"
+                   android:maxWidth="40dp"
+                   android:maxHeight="40dp"
+                   android:scaleType="centerInside"
+                   />
+        </LinearLayout>
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/compose_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/delete_but"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/compose_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/done_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="#d0d0d0"
+        >
+
+    <!-- Sync View -->
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+                 android:orientation="vertical"
+                 android:paddingTop="56dp"
+                 android:paddingLeft="8dp"
+                 android:paddingRight="8dp"
+                 android:paddingBottom="8dp"
+            >
+
+        <TextView android:id="@+id/sync_device_name"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:gravity="center_vertical|right"
+                  android:textSize="24dp"
+                  android:textColor="#FFFFFF"
+                  android:shadowColor="#000000"
+                  android:shadowDx="1"
+                  android:shadowDy="1"
+                  android:shadowRadius="2"
+                  android:text="PENTS90"
+                />
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:orientation="vertical">
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                    >
+                <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/sync_listen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/sync_listen_button"
+                        />
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"/>
+
+                <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/sync_connect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-36dp"
+                        android:background="@drawable/sync_connect_button"
+                        />
+
+            </LinearLayout>
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Background Frame -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+            >
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/top_bar"
+                ></ImageView>
+    </LinearLayout>
+
+    <!-- Controls -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="48dp"
+                  android:orientation="horizontal"
+            >
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/sync_panic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/panic_button"
+                android:layout_weight="0"
+                android:layout_gravity="left"
+                />
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="48dp"
+              android:layout_weight="1"
+                />
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/sync_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sync_list_button"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                />
+    </LinearLayout>
+
+</FrameLayout>

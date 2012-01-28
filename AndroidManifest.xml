@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.larvalabs.sneaker"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+    <uses-sdk android:targetSdkVersion="7" android:minSdkVersion="7"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-feature android:name="android.hardware.bluetooth" />
+
+    <application android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@android:style/Theme.NoTitleBar">
+        <activity android:name="Sneaker"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="DetailsActivity"/>
+        <activity android:name="ComposeActivity"/>
+        <activity android:name="SyncActivity" android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name="DeviceListActivity"
+                  android:label="@string/select_device"
+                  android:theme="@android:style/Theme.Dialog"
+                  android:configChanges="orientation|keyboardHidden" />
+        <provider android:name="SneakerContent" android:authorities="com.larvalabs.sneaker" />
+    </application>
+</manifest> 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/sync_anim_1" android:duration="250"/>
+    <item android:drawable="@drawable/sync_anim_2" android:duration="250"/>
+    <item android:drawable="@drawable/sync_anim_3" android:duration="250"/>
+    <item android:drawable="@drawable/sync_anim_4" android:duration="250"/>
+</animation-list>
