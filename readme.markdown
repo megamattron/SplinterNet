@@ -13,7 +13,7 @@ During times of civil unrest, governments have recently demonstrated a willingne
 How It Works
 ===
 
-SplinterNet is a true peer-to-peer network in that it requires physical proximity to other people to transmit messages. Currently this happens over close range Bluetooth connections. To illustrate how SplinterNet works, here is an example scenario:
+SplinterNet is a true peer-to-peer network in that it requires physical proximity to other people to transmit messages. In the current version this happens over a close range Bluetooth connection. To illustrate how SplinterNet works, here is an example scenario:
 
 * You take a picture of a protest happening near your home.
 * Fearing a spread of the protest the government shuts down cellular and Internet access to most citizens.
