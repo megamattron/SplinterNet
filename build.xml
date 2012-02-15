@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="sneaker" default="help">
+<project name="SplinterNet" default="help">
 
 <!-- The local.properties file is created and updated by the 'android'
      tool.
@@ -32,10 +32,17 @@
          application and should be checked into Version Control Systems. -->
     <property file="default.properties" />
 
+    <path id="android.antlibs">
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/apkbuilder.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/jarutils.jar" />
+    </path>
 
-    <!-- Required pre-setup import -->
-    <import file="${sdk.dir}/tools/ant/pre_setup.xml" />
-
+    <taskdef name="setup"
+        classname="com.android.ant.SetupTask"
+        classpathref="android.antlibs" />
 
 <!-- extension targets. Uncomment the ones where you want to do custom work
      in between standard targets -->
@@ -75,5 +82,35 @@
              - customize to your needs.
     -->
     <setup />
+
+    <!-- START OUR OWN BUILD DIRECTIVES -->
+    <target name="bundle" depends="scrub,install" description="Make debug APK."/>
+    <!--<target name="resources" depends="resource-src" description="Can I get a reso?"/>-->
+    <target name="deploy" depends="scrub,release" description="Make release APK."/>
+    <!--<target name="cleanit" depends="clean" description="Clean it up."/>-->
+    <target name="scrub" description="Cleans bin dir.">
+        <delete dir="bin"/>
+    </target>
+    <target name="shipit" depends="scrub,release"/>
+    <target name="removeupgrade" description="Remove the upgrade app.">
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="uninstall"/>
+            <arg value="com.larvalabs.photowall.unlock"/>
+        </exec>
+    </target>
+    <target name="removecache" description="Remove cache data.">
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="shell"/>
+            <arg value="rm -r /mnt/sdcard/Android/data/com.larvalabs.photowallv2"/>
+        </exec>
+    </target>
+    <target name="removeapp" description="Remove the app.">
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="uninstall"/>
+            <arg value="com.larvalabs.photowall"/>
+        </exec>
+    </target>
+    <target name="removeall" depends="removeapp, removecache" description="Remove app and cache data."/>
+    <!-- END OUR OWN BUILD DIRECTIVES -->
 
 </project>
