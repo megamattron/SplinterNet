@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -147,10 +149,25 @@ public class ComposeActivity extends Activity {
                     path = fileManagerString;
                 }
                 Util.debug("Imagepath: '" + path + "'.");
+                
+                String scrubPath = scrubExif(path);
+                if (path.equals(scrubPath)){
+                Util.debug("Warning: was not able to scrub");
+                }
+                
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
+            	// TODO Finish Handling EXIF of camera images
+            	// App crashes when taking picture
                 String path = "/sdcard/tmp";
+                
+                String scrubPath = scrubExif(path);
+                
+                if (path.equals(scrubPath)){
+                Util.debug("Warning: was not able to scrub");
+                }
+                
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             }
@@ -208,6 +225,36 @@ public class ComposeActivity extends Activity {
         } else {
             return null;
         }
+    }
+    
+    private String scrubExif(String path){
+        // TODO handle .jpg, .jpeg, .jpe .jif, .jfif, .jfi
+    	String originalpath = path;
+    	String scrubbedPath = null;
+        if (path.contains(".jpg")){
+        	scrubbedPath = ExifHandler.scrubExif(path);
+        }
+        
+        if (!scrubbedPath.equals(null)){
+        	path = scrubbedPath;
+        }
+        try {
+        	//TODO Remove
+        	//Test for Exif edit 
+            ExifInterface e = ExifHandler.getExif(originalpath);
+			ExifInterface a = ExifHandler.getExif(scrubbedPath);	
+			
+			Util.setDebugMode(true);
+			Util.debug("Original File");
+			Util.debug(ExifHandler.printExif(e));
+			Util.debug("Scrubbed file");
+			Util.debug(ExifHandler.printExif(a));
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        return path;
     }
 
 }
