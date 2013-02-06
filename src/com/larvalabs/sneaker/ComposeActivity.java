@@ -2,6 +2,7 @@ package com.larvalabs.sneaker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.*;
 import android.widget.AdapterView;
@@ -18,7 +20,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 /**
@@ -141,7 +146,7 @@ public class ComposeActivity extends Activity {
 
                 //MEDIA GALLERY
                 String selectedImagePath = getPath(selectedImageUri);
-
+                
                 String path;
                 if (selectedImagePath != null) {
                     path = selectedImagePath;
@@ -152,24 +157,68 @@ public class ComposeActivity extends Activity {
                 
                 String scrubPath = scrubExif(path);
                 if (path.equals(scrubPath)){
-                Util.debug("Warning: was not able to scrub");
+                Util.error("Warning: was not able to scrub", null);
                 }
                 
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
-            	// TODO Finish Handling EXIF of camera images
-            	// App crashes when taking picture
-                String path = "/sdcard/tmp";
-                
+            	//Not using i.getData() as it crashes on some devices for picture taking. 
+
+            	Bitmap bitmap = (Bitmap) data.getExtras().get("data"); 
+            	
+            	
+            	// TODO Saving directly as bitmap doesn't set exif data, code left just in case.
+/*
+            	String path = Environment.getExternalStorageDirectory().toString();
+            	OutputStream fOut = null;
+            	File file = new File(path, "TEMP_IMAGE.jpg");
+            	
+            	path = file.getAbsolutePath();				// Set path as new image
+            	
+            	try {
+					fOut = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+            	bitmap.compress(Bitmap.CompressFormat.JPEG, 95, fOut); //Save image to path
+            	
+            	try {
+					fOut.flush();
+					fOut.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+            	try {
+					MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	
+            	                
                 String scrubPath = scrubExif(path);
                 
                 if (path.equals(scrubPath)){
-                Util.debug("Warning: was not able to scrub");
+                Util.error("Warning: was not able to scrub", null);
                 }
+//              Bitmap bitmap = Util.decodeBitmap(path, 800);
                 
-                Bitmap bitmap = Util.decodeBitmap(path, 800);
-                setImageData(bitmap);
+
+            	
+                String scrubPath = scrubExif(path);		//Scrub exif
+                
+                if (path.equals(scrubPath)){
+                Util.error("Warning: was not able to scrub", null);
+                }
+                else
+*/
+                	setImageData(bitmap);
+                
             }
         }
     }
@@ -186,16 +235,22 @@ public class ComposeActivity extends Activity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.take_photo:
-
+            	
+            	ContentValues values = new ContentValues();
+            	values.put(MediaStore.Images.Media.TITLE, "Image File name");
+            	Uri mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            	
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 //i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                String path = "/sdcard/tmp";
-                Util.debug("USING PATH: " + path);
-                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
+                i.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                //String path = "/sdcard/tmp";
+                //Util.debug("USING PATH: " + path);
+                //i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
 //                    } else {
 //                        i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                    }
                 startActivityForResult(i, CAPTURE_IMAGE);
+                
                 return true;
             case R.id.choose_photo:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
@@ -235,20 +290,18 @@ public class ComposeActivity extends Activity {
         	scrubbedPath = ExifHandler.scrubExif(path);
         }
         
-        if (!scrubbedPath.equals(null)){
+        if (scrubbedPath != null){
         	path = scrubbedPath;
         }
         try {
-        	//TODO Remove Test for Exif edit 
+        	//TODO Remove Test for Exif, need to show user exif data 
             ExifInterface e = ExifHandler.getExif(originalpath);
 			ExifInterface a = ExifHandler.getExif(scrubbedPath);	
 			
-			Util.setDebugMode(true);
-			Util.debug("Original File");
-			Util.debug(ExifHandler.printExif(e));
-			Util.debug("Scrubbed file");
-			Util.debug(ExifHandler.printExif(a));
-			Util.setDebugMode(false);
+			Util.error("Original File", null);
+			Util.error(ExifHandler.printExif(e), null);
+			Util.error("Scrubbed file", null);
+			Util.error(ExifHandler.printExif(a), null);
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
