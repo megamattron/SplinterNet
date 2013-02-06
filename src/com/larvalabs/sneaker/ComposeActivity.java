@@ -236,19 +236,9 @@ public class ComposeActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.take_photo:
             	
-            	ContentValues values = new ContentValues();
-            	values.put(MediaStore.Images.Media.TITLE, "Image File name");
-            	Uri mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            	
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                //i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                //String path = "/sdcard/tmp";
-                //Util.debug("USING PATH: " + path);
-                //i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
-//                    } else {
-//                        i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    }
+                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
                 startActivityForResult(i, CAPTURE_IMAGE);
                 
                 return true;
