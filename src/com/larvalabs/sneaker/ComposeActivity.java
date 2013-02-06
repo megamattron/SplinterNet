@@ -228,7 +228,7 @@ public class ComposeActivity extends Activity {
     }
     
     private String scrubExif(String path){
-        // TODO handle .jpg, .jpeg, .jpe .jif, .jfif, .jfi
+        // TODO Gracefully handle .jpg, .jpeg, .jpe .jif, .jfif, .jfi
     	String originalpath = path;
     	String scrubbedPath = null;
         if (path.contains(".jpg")){
@@ -239,8 +239,7 @@ public class ComposeActivity extends Activity {
         	path = scrubbedPath;
         }
         try {
-        	//TODO Remove
-        	//Test for Exif edit 
+        	//TODO Remove Test for Exif edit 
             ExifInterface e = ExifHandler.getExif(originalpath);
 			ExifInterface a = ExifHandler.getExif(scrubbedPath);	
 			
@@ -249,6 +248,7 @@ public class ComposeActivity extends Activity {
 			Util.debug(ExifHandler.printExif(e));
 			Util.debug("Scrubbed file");
 			Util.debug(ExifHandler.printExif(a));
+			Util.setDebugMode(false);
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

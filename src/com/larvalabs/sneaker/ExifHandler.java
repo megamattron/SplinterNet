@@ -27,9 +27,9 @@ public class ExifHandler {
     	ExifInterface exif = new ExifInterface(working.getAbsolutePath());
     	exif.setAttribute(ExifInterface.TAG_MAKE, "");
     	exif.setAttribute(ExifInterface.TAG_MODEL, "");
-    	exif.setAttribute(ExifInterface.TAG_DATETIME, "");
-    	exif.setAttribute(ExifInterface.TAG_GPS_ALTITUDE, "");
-    	exif.setAttribute(ExifInterface.TAG_GPS_ALTITUDE_REF, "");
+//    	exif.setAttribute(ExifInterface.TAG_DATETIME, "");
+//    	exif.setAttribute(ExifInterface.TAG_GPS_ALTITUDE, "");
+//   	exif.setAttribute(ExifInterface.TAG_GPS_ALTITUDE_REF, "");
     	exif.saveAttributes();
     	return working.getAbsolutePath();
     	
