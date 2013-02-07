@@ -36,14 +36,21 @@ public class ComposeActivity extends Activity {
 
     private static final String SAVE_IMAGE = "image";
 
+    private static String takenPicture = null;
     private byte[] image = null;
     private Button attachButton = null;
     private ImageView attachImage = null;
     private View imageParent = null;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (savedInstanceState != null){
+        	  takenPicture = savedInstanceState.getString("fileName");
+        	}
+        
         setContentView(R.layout.compose_layout);
         final EditText editText = (EditText) findViewById(R.id.compose_entry);
         final Button panicButton = (Button) findViewById(R.id.compose_panic);
@@ -132,6 +139,7 @@ public class ComposeActivity extends Activity {
         if (image != null) {
             outState.putByteArray(SAVE_IMAGE, image);
         }
+        outState.putString("fileName", takenPicture);
     }
 
     @Override
@@ -163,61 +171,16 @@ public class ComposeActivity extends Activity {
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
-            	//Not using i.getData() as it crashes on some devices for picture taking. 
-
-            	Bitmap bitmap = (Bitmap) data.getExtras().get("data"); 
             	
-            	
-            	// TODO Saving directly as bitmap doesn't set exif data, code left just in case.
-/*
-            	String path = Environment.getExternalStorageDirectory().toString();
-            	OutputStream fOut = null;
-            	File file = new File(path, "TEMP_IMAGE.jpg");
-            	
-            	path = file.getAbsolutePath();				// Set path as new image
-            	
-            	try {
-					fOut = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-            	bitmap.compress(Bitmap.CompressFormat.JPEG, 95, fOut); //Save image to path
-            	
-            	try {
-					fOut.flush();
-					fOut.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-            	try {
-					MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            	
-            	                
-                String scrubPath = scrubExif(path);
+                String scrubPath = scrubExif(takenPicture);
                 
-                if (path.equals(scrubPath)){
+                if (takenPicture.equals(scrubPath)){
                 Util.error("Warning: was not able to scrub", null);
                 }
-//              Bitmap bitmap = Util.decodeBitmap(path, 800);
                 
-
-            	
-                String scrubPath = scrubExif(path);		//Scrub exif
-                
-                if (path.equals(scrubPath)){
-                Util.error("Warning: was not able to scrub", null);
-                }
-                else
-*/
-                	setImageData(bitmap);
+            	Bitmap bitmap = Util.decodeBitmap(takenPicture, 800);
+           	
+                setImageData(bitmap);
                 
             }
         }
@@ -235,12 +198,33 @@ public class ComposeActivity extends Activity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.take_photo:
+
+            	Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             	
+            	String workingDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            	workingDir += File.separator + "tmp" + File.separator;
+            	
+            	File newPicture = new File(workingDir);
+            	
+			try {
+				//File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg");
+				File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg", newPicture);
+				takenPicture = tempFile.getAbsolutePath();
+            	Uri uri = Uri.fromFile(tempFile);
+            	i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            	startActivityForResult(i, CAPTURE_IMAGE);
+            	
+            	
+            	/*
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                 startActivityForResult(i, CAPTURE_IMAGE);
-                
+                */
                 return true;
             case R.id.choose_photo:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
