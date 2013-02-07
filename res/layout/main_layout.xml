@@ -46,13 +46,14 @@
                 android:layout_weight="0"
                 android:layout_gravity="left"
                 />
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                     android:layout_width="wrap_content"
-                     android:layout_height="48dp"
-                     android:background="@drawable/search"
-                     android:orientation="horizontal"
-                     android:layout_weight="1"
-                >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/search"
+            android:orientation="horizontal" >
+
             <Button xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/search_button"
                     android:focusable="true"

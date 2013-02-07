@@ -2,13 +2,16 @@ package com.larvalabs.sneaker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.*;
 import android.widget.AdapterView;
@@ -17,6 +20,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 /**
@@ -29,14 +36,21 @@ public class ComposeActivity extends Activity {
 
     private static final String SAVE_IMAGE = "image";
 
+    private static String takenPicture = null;
     private byte[] image = null;
     private Button attachButton = null;
     private ImageView attachImage = null;
     private View imageParent = null;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (savedInstanceState != null){
+        	  takenPicture = savedInstanceState.getString("fileName");
+        	}
+        
         setContentView(R.layout.compose_layout);
         final EditText editText = (EditText) findViewById(R.id.compose_entry);
         final Button panicButton = (Button) findViewById(R.id.compose_panic);
@@ -125,6 +139,7 @@ public class ComposeActivity extends Activity {
         if (image != null) {
             outState.putByteArray(SAVE_IMAGE, image);
         }
+        outState.putString("fileName", takenPicture);
     }
 
     @Override
@@ -139,7 +154,7 @@ public class ComposeActivity extends Activity {
 
                 //MEDIA GALLERY
                 String selectedImagePath = getPath(selectedImageUri);
-
+                
                 String path;
                 if (selectedImagePath != null) {
                     path = selectedImagePath;
@@ -147,12 +162,26 @@ public class ComposeActivity extends Activity {
                     path = fileManagerString;
                 }
                 Util.debug("Imagepath: '" + path + "'.");
+                
+                String scrubPath = scrubExif(path);
+                if (path.equals(scrubPath)){
+                Util.error("Warning: was not able to scrub", null);
+                }
+                
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
-                String path = "/sdcard/tmp";
-                Bitmap bitmap = Util.decodeBitmap(path, 800);
+            	
+                String scrubPath = scrubExif(takenPicture);
+                
+                if (takenPicture.equals(scrubPath)){
+                Util.error("Warning: was not able to scrub", null);
+                }
+                
+            	Bitmap bitmap = Util.decodeBitmap(takenPicture, 800);
+           	
                 setImageData(bitmap);
+                
             }
         }
     }
@@ -170,15 +199,32 @@ public class ComposeActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.take_photo:
 
+            	Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            	
+            	String workingDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            	workingDir += File.separator + "tmp" + File.separator;
+            	
+            	File newPicture = new File(workingDir);
+            	
+			try {
+				//File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg");
+				File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg", newPicture);
+				takenPicture = tempFile.getAbsolutePath();
+            	Uri uri = Uri.fromFile(tempFile);
+            	i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            	startActivityForResult(i, CAPTURE_IMAGE);
+            	
+            	
+            	/*
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                //i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                String path = "/sdcard/tmp";
-                Util.debug("USING PATH: " + path);
-                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
-//                    } else {
-//                        i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    }
+                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
                 startActivityForResult(i, CAPTURE_IMAGE);
+                */
                 return true;
             case R.id.choose_photo:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
@@ -208,6 +254,34 @@ public class ComposeActivity extends Activity {
         } else {
             return null;
         }
+    }
+    
+    private String scrubExif(String path){
+        // TODO Gracefully handle .jpg, .jpeg, .jpe .jif, .jfif, .jfi
+    	String originalpath = path;
+    	String scrubbedPath = null;
+        if (path.contains(".jpg")){
+        	scrubbedPath = ExifHandler.scrubExif(path);
+        }
+        
+        if (scrubbedPath != null){
+        	path = scrubbedPath;
+        }
+        try {
+        	//TODO Remove Test for Exif, need to show user exif data 
+            ExifInterface e = ExifHandler.getExif(originalpath);
+			ExifInterface a = ExifHandler.getExif(scrubbedPath);	
+			
+			Util.error("Original File", null);
+			Util.error(ExifHandler.printExif(e), null);
+			Util.error("Scrubbed file", null);
+			Util.error(ExifHandler.printExif(a), null);
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        return path;
     }
 
 }
