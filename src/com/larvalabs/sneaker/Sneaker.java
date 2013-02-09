@@ -28,7 +28,7 @@ public class Sneaker extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Util.setProjectName("SplinterNet");
-        Util.setDebugMode(false);
+        Util.setDebugMode(true);
         Database.initialize(this);
         Database db = Database.getDB();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

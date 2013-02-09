@@ -41,16 +41,16 @@ public class ComposeActivity extends Activity {
     private Button attachButton = null;
     private ImageView attachImage = null;
     private View imageParent = null;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if (savedInstanceState != null){
-        	  takenPicture = savedInstanceState.getString("fileName");
-        	}
-        
+
+        if (savedInstanceState != null) {
+            takenPicture = savedInstanceState.getString("fileName");
+        }
+
         setContentView(R.layout.compose_layout);
         final EditText editText = (EditText) findViewById(R.id.compose_entry);
         final Button panicButton = (Button) findViewById(R.id.compose_panic);
@@ -154,7 +154,7 @@ public class ComposeActivity extends Activity {
 
                 //MEDIA GALLERY
                 String selectedImagePath = getPath(selectedImageUri);
-                
+
                 String path;
                 if (selectedImagePath != null) {
                     path = selectedImagePath;
@@ -162,26 +162,26 @@ public class ComposeActivity extends Activity {
                     path = fileManagerString;
                 }
                 Util.debug("Imagepath: '" + path + "'.");
-                
+
                 String scrubPath = scrubExif(path);
-                if (path.equals(scrubPath)){
-                Util.error("Warning: was not able to scrub", null);
+                if (path.equals(scrubPath)) {
+                    Util.error("Warning: was not able to scrub", null);
                 }
-                
+
                 Bitmap bitmap = Util.decodeBitmap(path, 800);
                 setImageData(bitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
-            	
+
                 String scrubPath = scrubExif(takenPicture);
-                
-                if (takenPicture.equals(scrubPath)){
-                Util.error("Warning: was not able to scrub", null);
+
+                if (takenPicture.equals(scrubPath)) {
+                    Util.error("Warning: was not able to scrub", null);
                 }
-                
-            	Bitmap bitmap = Util.decodeBitmap(takenPicture, 800);
-           	
+
+                Bitmap bitmap = Util.decodeBitmap(takenPicture, 800);
+
                 setImageData(bitmap);
-                
+
             }
         }
     }
@@ -199,27 +199,40 @@ public class ComposeActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.take_photo:
 
-            	Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            	
-            	String workingDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            	workingDir += File.separator + "tmp" + File.separator;
-            	
-            	File newPicture = new File(workingDir);
-            	
-			try {
-				//File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg");
-				File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg", newPicture);
-				takenPicture = tempFile.getAbsolutePath();
-            	Uri uri = Uri.fromFile(tempFile);
-            	i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            	startActivityForResult(i, CAPTURE_IMAGE);
-            	
-            	
-            	/*
+                Util.debug("Taking photo...");
+
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                String workingDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+                Util.debug("State: " + Environment.getExternalStorageState());
+                workingDir += File.separator + "tmp" + File.separator;
+                Util.debug("Working dir: " + workingDir);
+
+                File newPicture = new File(workingDir);
+                if (newPicture.exists() && newPicture.isFile()) {
+                    Util.debug("There's a file where we want the tmp dir to be, deleting.");
+                    newPicture.delete();
+                }
+                if (!newPicture.exists()) {
+                    Util.debug("Making tmp dir for storing taken photo.");
+                    newPicture.mkdir();
+                }
+                Util.debug("New picture: " + newPicture.getAbsolutePath());
+
+                try {
+                    //File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg");
+                    File tempFile = File.createTempFile("Sneaker_IMAGE", ".jpg", newPicture);
+                    takenPicture = tempFile.getAbsolutePath();
+                    Util.debug("Taken picture: " + takenPicture);
+                    Uri uri = Uri.fromFile(tempFile);
+                    i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                } catch (IOException e) {
+                    Util.error("Error setting temp file for taking photo", e);
+                }
+                startActivityForResult(i, CAPTURE_IMAGE);
+
+
+                /*
                 Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
@@ -255,32 +268,31 @@ public class ComposeActivity extends Activity {
             return null;
         }
     }
-    
-    private String scrubExif(String path){
+
+    private String scrubExif(String path) {
         // TODO Gracefully handle .jpg, .jpeg, .jpe .jif, .jfif, .jfi
-    	String originalpath = path;
-    	String scrubbedPath = null;
-        if (path.contains(".jpg")){
-        	scrubbedPath = ExifHandler.scrubExif(path);
+        String originalpath = path;
+        String scrubbedPath = null;
+        if (path != null && path.contains(".jpg")) {
+            scrubbedPath = ExifHandler.scrubExif(path);
         }
-        
-        if (scrubbedPath != null){
-        	path = scrubbedPath;
+
+        if (scrubbedPath != null) {
+            path = scrubbedPath;
         }
         try {
-        	//TODO Remove Test for Exif, need to show user exif data 
+            //TODO Remove Test for Exif, need to show user exif data
             ExifInterface e = ExifHandler.getExif(originalpath);
-			ExifInterface a = ExifHandler.getExif(scrubbedPath);	
-			
-			Util.error("Original File", null);
-			Util.error(ExifHandler.printExif(e), null);
-			Util.error("Scrubbed file", null);
-			Util.error(ExifHandler.printExif(a), null);
-			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            ExifInterface a = ExifHandler.getExif(scrubbedPath);
+
+            Util.debug("Original File");
+            Util.debug(ExifHandler.printExif(e));
+            Util.debug("Scrubbed file");
+            Util.debug(ExifHandler.printExif(a));
+
+        } catch (IOException e1) {
+            Util.error("Error scrubbing EXIF", e1);
+        }
         return path;
     }
 
