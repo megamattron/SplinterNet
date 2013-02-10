@@ -34,3 +34,5 @@ Project Status
 ===
 
 This is an experimental project still in development. All of the features listed here should work, they just haven't been tested in large networks. Please let us know how it works!
+
+[![Build Status](https://travis-ci.org/megamattron/SplinterNet.png?branch=master)](https://travis-ci.org/megamattron/SplinterNet)
