@@ -13,4 +13,5 @@ before_install:
 
   - android list targets
   - android update project -p . -t android-8
+# Attempt to build main project
 script: "ant clean debug"
