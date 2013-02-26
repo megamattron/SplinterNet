@@ -35,4 +35,9 @@ Project Status
 
 This is an experimental project still in development. All of the features listed here should work, they just haven't been tested in large networks. Please let us know how it works!
 
+Credits
+===
+
+SplinterNet was written by John Watkinson (https://github.com/pents90) and Matt Hall (https://github.com/megamattron). It was designed by Alvaro Casanova (https://github.com/yeahstyle).
+
 [![Build Status](https://travis-ci.org/megamattron/SplinterNet.png?branch=master)](https://travis-ci.org/megamattron/SplinterNet)
